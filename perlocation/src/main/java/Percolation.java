@@ -9,11 +9,10 @@ public class Percolation {
   private boolean array[];
   private WeightedQuickUnionUF weightedQuickUnionUF;
   private int size;
-  private int top[];
-  private int bottom[];
+  private int top;
+  private int bottom;
 
-  public Percolation(int n)                // create n-by-n grid, with all sites blocked
-  {
+  public Percolation(int n) {
     if (n <= 0)
       throw new IllegalArgumentException("Percolation array size shouldn't be lower then 1");
 
@@ -23,10 +22,9 @@ public class Percolation {
       array[i] = false;
     }
 
-//    top = new int[n];
-//    bottom = new int[n];
-
-    weightedQuickUnionUF = new WeightedQuickUnionUF(size);
+    top = n + 1;
+    bottom = n + 2;
+    weightedQuickUnionUF = new WeightedQuickUnionUF(size + 2);
   }
 
   public static void main(String[] args) {
