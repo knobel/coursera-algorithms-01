@@ -22,9 +22,9 @@ public class Percolation {
       array[i] = false;
     }
 
-    top = n + 1;
-    bottom = n + 2;
-    weightedQuickUnionUF = new WeightedQuickUnionUF(size + 2);
+    top = size * size;
+    bottom = size * size + 1;
+    weightedQuickUnionUF = new WeightedQuickUnionUF(size * size + 2);
   }
 
   public static void main(String[] args) {
@@ -35,7 +35,6 @@ public class Percolation {
 
     int index = returnIndex(row, col);
     array[index] = true;
-
     //up
     if (row > 1 && isOpen(row - 1, col)) {
       int indexU = returnIndex(row - 1, col);
@@ -52,10 +51,15 @@ public class Percolation {
       weightedQuickUnionUF.union(index, indexR);
     }
     //down
-    if (col > size && isOpen(row + 1, col)) {
+    if (row < size && isOpen(row + 1, col)) {
       int indexD = returnIndex(row + 1, col);
       weightedQuickUnionUF.union(index, indexD);
     }
+    //connect with top and the bottom if the point is in the first or last row
+    if (row == 1)
+      weightedQuickUnionUF.union(index, top);
+    if (row == size)
+      weightedQuickUnionUF.union(index, bottom);
   }
 
   public boolean isOpen(int row, int col) {
@@ -63,14 +67,16 @@ public class Percolation {
   }
 
   public boolean isFull(int row, int col) {  // is site (row, col) full?
+    if (0 > row && row > size && 0 > row && row > size) {
+      throw new IndexOutOfBoundsException();
+    }
     int index = returnIndex(row, col);
-
-    return false;
+    return weightedQuickUnionUF.connected(top, index);
   }
 
   public boolean percolates()              // does the system percolate?
   {
-    return false;
+    return weightedQuickUnionUF.connected(top, bottom);
   }
 
   private int returnIndex(int row, int col) {
