@@ -7,13 +7,10 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
-  int numberOfLoops[];
   double openedTosizeRatio[];
-
 
   public PercolationStats(int n, int trials)    // perform trials independent experiments on an n-by-n grid
   {
-    numberOfLoops = new int[trials];
     openedTosizeRatio = new double[trials];
 
     for (int i = 0; i < trials; i++) {
@@ -27,21 +24,17 @@ public class PercolationStats {
           openedCells++;
         }
       }
-      numberOfLoops[i] = openedCells;
       openedTosizeRatio[i] = (double) openedCells / (n * n);
     }
   }
 
   public static void main(String[] args)    // test client (described below)
   {
-    int N = 120;
-    int T = 500;
-    PercolationStats ps = new PercolationStats(N, T);
+    PercolationStats percolationStats = new PercolationStats(50, 100);
 
-    String confidence = ps.confidenceLo() + ", " + ps.confidenceHi();
-    StdOut.println("mean                    = " + ps.mean());
-    StdOut.println("stddev                  = " + ps.stddev());
-    StdOut.println("95% confidence interval = " + confidence);
+    StdOut.println("mean                    = " + percolationStats.mean());
+    StdOut.println("stddev                  = " + percolationStats.stddev());
+    StdOut.println("95% confidence          = " + percolationStats.confidenceLo() + ", " + percolationStats.confidenceHi());
   }
 
   public double mean()                          // sample mean of percolation threshold

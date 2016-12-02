@@ -6,16 +6,17 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-  private boolean array[];
+  private boolean[] array;
   private WeightedQuickUnionUF weightedQuickUnionUF;
   private int size;
   private int top;
   private int bottom;
 
   public Percolation(int n) {
-    if (n <= 0)
-      throw new IllegalArgumentException("Percolation array size shouldn't be lower then 1");
-
+    if (n <= 0) {
+      throw new IllegalArgumentException(
+          "Percolation array size shouldn't be lower then 1");
+    }
     size = n;
     array = new boolean[size * size];
     for (int i = 0; i < size; i++) {
@@ -35,31 +36,33 @@ public class Percolation {
 
     int index = returnIndex(row, col);
     array[index] = true;
-    //up
+    // up
     if (row > 1 && isOpen(row - 1, col)) {
       int indexU = returnIndex(row - 1, col);
       weightedQuickUnionUF.union(index, indexU);
     }
-    //left
+    // left
     if (col > 1 && isOpen(row, col - 1)) {
       int indexL = returnIndex(row, col - 1);
       weightedQuickUnionUF.union(index, indexL);
     }
-    //right
+    // right
     if (col < size && isOpen(row, col + 1)) {
       int indexR = returnIndex(row, col + 1);
       weightedQuickUnionUF.union(index, indexR);
     }
-    //down
+    // down
     if (row < size && isOpen(row + 1, col)) {
       int indexD = returnIndex(row + 1, col);
       weightedQuickUnionUF.union(index, indexD);
     }
-    //connect with top and the bottom if the point is in the first or last row
-    if (row == 1)
+    // connect with top and the bottom if the point is in the first or last row
+    if (row == 1) {
       weightedQuickUnionUF.union(index, top);
-    if (row == size)
+    }
+    if (row == size) {
       weightedQuickUnionUF.union(index, bottom);
+    }
   }
 
   public boolean isOpen(int row, int col) {
@@ -67,7 +70,7 @@ public class Percolation {
   }
 
   public boolean isFull(int row, int col) {  // is site (row, col) full?
-    if (0 > row && row > size && 0 > row && row > size) {
+    if (0 > row && row > size && 0 > col && col > size) {
       throw new IndexOutOfBoundsException();
     }
     int index = returnIndex(row, col);
