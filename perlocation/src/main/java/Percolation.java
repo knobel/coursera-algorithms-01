@@ -74,8 +74,7 @@ public class Percolation {
     return weightedQuickUnionUF.connected(top, index);
   }
 
-  public boolean percolates()              // does the system percolate?
-  {
+  public boolean percolates() {
     return weightedQuickUnionUF.connected(top, bottom);
   }
 
