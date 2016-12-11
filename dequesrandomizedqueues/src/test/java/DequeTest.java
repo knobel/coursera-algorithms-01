@@ -28,8 +28,20 @@ public class DequeTest {
     }
 
     @Test
-    public void size() throws Exception {
+    public void size0() throws Exception {
         assertEquals(0, deque.size());
+    }
+
+    @Test
+    public void size() throws Exception {
+        deque.addFirst("Test1");
+        assertEquals(1, deque.size());
+
+        deque.addFirst("Test2");
+        assertEquals(2, deque.size());
+
+        deque.addLast("Test3");
+        assertEquals(3, deque.size());
     }
 
     @Test
