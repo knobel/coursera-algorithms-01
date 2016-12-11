@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -69,6 +71,19 @@ public class DequeTest {
     @Test
     public void iterator() throws Exception {
 
+    }
+
+    @Test
+    public void testCoursera3() throws Exception {
+        deque.addFirst("Test 1");
+        deque.addFirst("Test 2");
+        Iterator<String> iterator = deque.iterator();
+        String next = iterator.next();
+        String next2 = iterator.next();
+        deque.addFirst("Test 3");
+        deque.addFirst("Test 4");
+        deque.addFirst("Test 5");
+        String next3 = iterator.next();
     }
 
 }
