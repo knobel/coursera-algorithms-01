@@ -89,6 +89,7 @@ modules.xml
 
 ### Java ###
 *.class
+target
 
 # BlueJ files
 *.ctxt
