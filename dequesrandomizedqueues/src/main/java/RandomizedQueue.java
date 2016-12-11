@@ -10,8 +10,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private int size = 0;
     private Node first;
     private Node last;
+    private Item[] queue;
 
     public RandomizedQueue() {
+        queue = (Item[]) new Object[8];
     }
 
     public static void main(String[] args) {
@@ -79,13 +81,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (size() == 0) {
             throw new NoSuchElementException();
         }
-        Item result = first.item;
-        int randomIndex = 1;
-        if (size() > 1) {
-            randomIndex = StdRandom.uniform(1, size());
-        }
+        Item result = null;
+        int randomIndex = StdRandom.uniform(size()) + 1;
+
         Iterator<Item> iterator = this.iterator();
-        for (int i = 1; i < randomIndex && iterator.hasNext(); i++) {
+        for (int i = 0; i < randomIndex; i++) {
             result = iterator.next();
         }
         return result;
