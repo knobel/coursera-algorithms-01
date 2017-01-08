@@ -25,7 +25,7 @@ public class Solver {
             searchNode = queue.delMin();
             Iterable<Board> neighbors = searchNode.board.neighbors();
             for (Board board: neighbors) {
-                if (board != searchNode.previousSearchNode.board) {
+                if (searchNode.previousSearchNode != null && board != searchNode.previousSearchNode.board) {
                     queue.insert(new SearchNode(board, searchNode.previousSearchNode));
                 }
             }
@@ -33,7 +33,7 @@ public class Solver {
             twinSearchNode = queue.delMin();
             Iterable<Board> twinNeighbors = twinSearchNode.board.neighbors();
             for (Board board: twinNeighbors) {
-                if (board != twinSearchNode.previousSearchNode.board) {
+                if (twinSearchNode.previousSearchNode != null && board != twinSearchNode.previousSearchNode.board) {
                     queue.insert(new SearchNode(board, twinSearchNode.previousSearchNode));
                 }
             }

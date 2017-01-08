@@ -6,13 +6,21 @@ import java.util.List;
  */
 public class Board {
     private final int[][] board;
-    private List<Board> neighbours = new LinkedList<Board>();
 
     public Board(int[][] blocks) {
         board = new int[blocks.length][blocks.length];
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks.length; j++) {
-                board[i][j] = blocks[i][j];
+                board[i][j] = blocks[j][i];  //wczytywane wierszami!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
+        }
+    }
+
+    private Board(int[][] blocks, boolean reverted) {
+        board = new int[blocks.length][blocks.length];
+        for (int i = 0; i < blocks.length; i++) {
+            for (int j = 0; j < blocks.length; j++) {
+                board[i][j] = blocks[i][j];  //wczytywane wierszami!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
     }
@@ -59,8 +67,7 @@ public class Board {
         return true;
     }
 
-    public Board twin()                    // a board that is obtained by exchanging any pair of blocks
-    {
+    public Board twin() {
         int[][] tempBlocks = copyBlocks();
         for (int i = 0; i < tempBlocks.length; i++) {
             for (int j = 0; j < tempBlocks.length - 1; j++) {
@@ -68,7 +75,7 @@ public class Board {
                     int temp = tempBlocks[i][j];
                     tempBlocks[i][j] = tempBlocks[i][j + 1];
                     tempBlocks[i][j + 1] = temp;
-                    return new Board(tempBlocks);
+                    return new Board(tempBlocks, true);
                 }
             }
         }
@@ -98,8 +105,7 @@ public class Board {
     }
 
     public Iterable<Board> neighbors() {
-        calculateNeighbours();
-        return neighbours;
+        return calculateNeighbours();
     }
 
     public String toString() {
@@ -107,7 +113,7 @@ public class Board {
         for (int i = 0; i < board.length; i++) {
             sb.append("\n ");
             for (int j = 0; j < board.length; j++) {
-                sb.append(board[i][j]);
+                sb.append(board[j][i]);
                 sb.append("  ");
             }
         }
@@ -121,7 +127,7 @@ public class Board {
         if (board.length - 1 == i && board.length - 1 == j) {
             return 0;
         }
-        return board.length * i + j + 1;
+        return board.length * j + i + 1;
     }
 
     private int getDistanceToDefaultPosition(final int i, final int j) {
@@ -149,7 +155,9 @@ public class Board {
         return defaultRowIndex;
     }
 
-    private void calculateNeighbours() {
+    private Iterable<Board> calculateNeighbours() {
+
+        List<Board> result = new LinkedList<Board>();
         int i0 = -10, j0 = -10;
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
@@ -160,19 +168,20 @@ public class Board {
             }
         }
 
-        final int[][] SHIFTS_TO_NEIGHBOURS = {{0,1}, {0, -1}, {1, 0}, {0, 1}};
+        final int[][] SHIFTS_TO_NEIGHBOURS = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
         for (int i = 0; i < SHIFTS_TO_NEIGHBOURS.length; i++) {
             int iNeighbour = i0 - SHIFTS_TO_NEIGHBOURS[i][0];
             int jNeighbour = j0 - SHIFTS_TO_NEIGHBOURS[i][1];
-            if (iNeighbour >= 0 && jNeighbour >= 0) {
+            if (iNeighbour >= 0 && jNeighbour >= 0 && iNeighbour < board.length && jNeighbour < board.length) {
                 int[][] boardTemp = copyBlocks();
                 boardTemp[i0][j0] = boardTemp[iNeighbour][jNeighbour];
                 boardTemp[iNeighbour][jNeighbour] = 0;
-                Board neighbourBoard = new Board(boardTemp);
-                neighbours.add(neighbourBoard);
+                Board neighbourBoard = new Board(boardTemp, true);
+                result.add(neighbourBoard);
             }
         }
+        return result;
     }
 
     private int[][] copyBlocks() {
