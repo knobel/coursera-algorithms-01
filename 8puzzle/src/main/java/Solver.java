@@ -1,18 +1,20 @@
 import edu.princeton.cs.algs4.MinPQ;
 import edu.princeton.cs.algs4.Stack;
 
+
 /**
  * Created by michal on 06.01.17.
  */
 public class Solver {
-    private MinPQ<SearchNode> queue = new MinPQ<SearchNode>();
-    private MinPQ<SearchNode> twinQueue = new MinPQ<SearchNode>();
+
     private SearchNode solutionNode = null;
 
     public Solver(Board initial) {
         if (initial == null) {
             throw new NullPointerException();
         }
+        MinPQ<SearchNode> queue = new MinPQ<SearchNode>();
+        MinPQ<SearchNode> twinQueue = new MinPQ<SearchNode>();
 
         SearchNode searchNode = new SearchNode(initial, null);
         SearchNode twinSearchNode = new SearchNode(initial.twin(), null);
@@ -23,6 +25,7 @@ public class Solver {
         while (!searchNode.board.isGoal() && !twinSearchNode.board.isGoal()) {
 
             searchNode = queue.delMin();
+
             Iterable<Board> neighbors = searchNode.board.neighbors();
             for (Board board: neighbors) {
                 if (searchNode.previousSearchNode == null || !board.equals(searchNode.previousSearchNode.board)) {
@@ -41,6 +44,7 @@ public class Solver {
 
         if (searchNode.board.isGoal()) {
             solutionNode = searchNode;
+            return;
         }
 
     }
@@ -75,7 +79,7 @@ public class Solver {
 
     private class SearchNode implements Comparable<SearchNode> {
         private Board board;
-            private SearchNode previousSearchNode;
+        private SearchNode previousSearchNode;
         private int moves;
         private int priority;
 
@@ -100,6 +104,7 @@ public class Solver {
             }
         }
     }
+
 
 }
 

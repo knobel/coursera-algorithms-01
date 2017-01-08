@@ -64,6 +64,19 @@ public class BoardTest extends AbstractTest{
     }
 
     @Test
+    public void toStringTest2() throws Exception {
+
+        String expected = "3\n" +
+                " 1  0  3  \n" +
+                " 4  2  5  \n" +
+                " 7  8  6  ";
+        int[][] blocks =  new int[][] {{1, 0, 3}, {4, 2, 5}, {7, 8, 6}};
+        Board board = new Board(blocks);
+        System.out.println(board.toString());
+        Assert.assertEquals(expected, board.toString());
+    }
+
+    @Test
     public void equalsTest() throws Exception {
         Object nullObj = null;
         Assert.assertFalse(board01.equals(nullObj));
@@ -198,6 +211,16 @@ public class BoardTest extends AbstractTest{
     public void getNeighboursTest2() throws Exception {
         int[][] testBlocks = new int[][]{{0, 2},
                 {1, 3}};
+        Iterable<Board> neighbors = new Board(testBlocks).neighbors();
+        for (Board b: neighbors) {
+            System.out.println(b.toString());
+        }
+    }
+
+    @Ignore
+    @Test
+    public void getNeighboursTest3() throws Exception {
+        int[][] testBlocks = getTilesFromFile("puzzle40.txt");
         Iterable<Board> neighbors = new Board(testBlocks).neighbors();
         for (Board b: neighbors) {
             System.out.println(b.toString());
