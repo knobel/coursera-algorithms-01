@@ -31,26 +31,27 @@ import edu.princeton.cs.algs4.StdOut;
 public class PuzzleChecker {
 
     public static void main(String[] args) {
+        for (int k = 0; k < 100000; k++) {
+            // for each command-line argument
+            for (String filename : args) {
 
-        // for each command-line argument
-        for (String filename : args) {
-
-            // read in the board specified in the filename
-            In in = new In(filename);
-            int n = in.readInt();
-            int[][] tiles = new int[n][n];
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    tiles[i][j] = in.readInt();
+                // read in the board specified in the filename
+                In in = new In(filename);
+                int n = in.readInt();
+                int[][] tiles = new int[n][n];
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        tiles[i][j] = in.readInt();
+                    }
                 }
-            }
 
-            // solve the slider puzzle
-            Board initial = new Board(tiles);
-            initial.manhattan();
-            initial.neighbors();
-            Solver solver = new Solver(initial);
-            StdOut.println(filename + ": " + solver.moves());
+                // solve the slider puzzle
+                Board initial = new Board(tiles);
+                initial.manhattan();
+                initial.neighbors();
+                Solver solver = new Solver(initial);
+                StdOut.println(filename + ": " + solver.moves());
+            }
         }
     }
 }

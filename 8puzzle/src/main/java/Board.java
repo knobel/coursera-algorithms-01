@@ -6,21 +6,23 @@ import java.util.List;
  */
 public class Board {
     private final int[][] board;
+    private int manhattan = -1;
+    private int hamming = -1;
 
     public Board(int[][] blocks) {
         board = new int[blocks.length][blocks.length];
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks.length; j++) {
-                board[i][j] = blocks[j][i];  //wczytywane wierszami!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                board[i][j] = blocks[j][i];  // wczytywane wierszami!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
     }
 
-    private Board(int[][] blocks, boolean reverted) {
+    private Board(int[][] blocks, boolean reverted) { // odwrocony format danych
         board = new int[blocks.length][blocks.length];
         for (int i = 0; i < blocks.length; i++) {
             for (int j = 0; j < blocks.length; j++) {
-                board[i][j] = blocks[i][j];  //wczytywane wierszami!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                board[i][j] = blocks[i][j];
             }
         }
     }
@@ -29,34 +31,42 @@ public class Board {
         return board.length;
     }
 
-    public int hamming()                   // number of blocks out of place
-    {
-        int result = 0;
+    public int hamming() {
+        if (this.hamming == -1) {
+            int result = 0;
 
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                if (board[i][j] != getValueFromArrayIndex(i, j) && board[i][j] != 0) {
-                    result++;
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board.length; j++) {
+                    if (board[i][j] != getValueFromArrayIndex(i, j) && board[i][j] != 0) {
+                        result++;
+                    }
                 }
             }
+            this.hamming = result;
+            return result;
+        } else {
+            return this.hamming;
         }
-        return result;
     }
 
     public int manhattan()                 // sum of Manhattan distances between blocks and goal
     {
-        int result = 0;
+        if (this.manhattan == -1) {
+            int result = 0;
 
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board.length; j++) {
-                result += getDistanceToDefaultPosition(i, j);
+            for (int i = 0; i < board.length; i++) {
+                for (int j = 0; j < board.length; j++) {
+                    result += getDistanceToDefaultPosition(i, j);
+                }
             }
+            this.manhattan = result;
+            return result;
+        } else {
+            return this.manhattan;
         }
-        return result;
     }
 
-    public boolean isGoal()                // is this board the goal board?
-    {
+    public boolean isGoal() {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 if (board[i][j] != getValueFromArrayIndex(i, j)) {
@@ -84,7 +94,7 @@ public class Board {
 
     public boolean equals(Object y)        // does this board equal y?
     {
-        if (!(y instanceof Board) || y == null) {
+        if (y == null || y.getClass() != Board.class) {
             return false;
         }
         if (this == y) {
@@ -144,14 +154,14 @@ public class Board {
         int defaultColumnIndex;
         defaultColumnIndex = value % size - 1;
         if (defaultColumnIndex == -1) {
-            defaultColumnIndex = size-1;
+            defaultColumnIndex = size - 1;
         }
         return defaultColumnIndex;
     }
 
     private int getDefaultRowIndexFromValue(int value, int size) {
         int defaultRowIndex;
-        defaultRowIndex = (value - 1)/ size ;
+        defaultRowIndex = (value - 1) / size;
         return defaultRowIndex;
     }
 

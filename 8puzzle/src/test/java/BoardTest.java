@@ -1,22 +1,18 @@
-import edu.princeton.cs.algs4.In;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
  * Created by michal on 06.01.17.
  */
-public class BoardTest {
+public class BoardTest extends AbstractTest{
     Board board01;
     Board board02;
     int[][] testBlocks01 = new int[][]{{0, 1, 3}, {4, 2, 5}, {7, 8, 6}};
     int[][] testBlocks02 = new int[][]{{5, 4, 7}, {6, 0, 8}, {2, 3, 1}};
-    File resourcesDirectory = new File("src/test/resources/data");
 
 
     @Before
@@ -223,19 +219,6 @@ public class BoardTest {
         Board testBoard = new Board(tiles);
         System.out.println(testBoard);
         System.out.println(testBoard.twin());
-    }
-
-    private int[][] getTilesFromFile(String fileName) throws IOException {
-        String filePath = resourcesDirectory.getCanonicalPath() + File.separator + fileName;
-        In in = new In(filePath);
-        int n = in.readInt();
-        int[][] tiles = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                tiles[i][j] = in.readInt();
-            }
-        }
-        return tiles;
     }
 
     @Test

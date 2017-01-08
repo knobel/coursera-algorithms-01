@@ -20,21 +20,21 @@ public class Solver {
         queue.insert(searchNode);
         twinQueue.insert(twinSearchNode);
 
-        while (!searchNode.board.isGoal() && !searchNode.board.isGoal()) {
+        while (!searchNode.board.isGoal() && !twinSearchNode.board.isGoal()) {
 
             searchNode = queue.delMin();
             Iterable<Board> neighbors = searchNode.board.neighbors();
             for (Board board: neighbors) {
-                if (searchNode.previousSearchNode != null && board != searchNode.previousSearchNode.board) {
-                    queue.insert(new SearchNode(board, searchNode.previousSearchNode));
+                if (searchNode.previousSearchNode == null || !board.equals(searchNode.previousSearchNode.board)) {
+                    queue.insert(new SearchNode(board, searchNode));
                 }
             }
 
-            twinSearchNode = queue.delMin();
+            twinSearchNode = twinQueue.delMin();
             Iterable<Board> twinNeighbors = twinSearchNode.board.neighbors();
             for (Board board: twinNeighbors) {
-                if (twinSearchNode.previousSearchNode != null && board != twinSearchNode.previousSearchNode.board) {
-                    queue.insert(new SearchNode(board, twinSearchNode.previousSearchNode));
+                if (twinSearchNode.previousSearchNode == null || !board.equals(twinSearchNode.previousSearchNode.board)) {
+                    twinQueue.insert(new SearchNode(board, twinSearchNode));
                 }
             }
         }
@@ -75,7 +75,7 @@ public class Solver {
 
     private class SearchNode implements Comparable<SearchNode> {
         private Board board;
-        private SearchNode previousSearchNode;
+            private SearchNode previousSearchNode;
         private int moves;
         private int priority;
 
@@ -87,9 +87,8 @@ public class Solver {
             } else {
                 moves = previousBoard.moves + 1;
             }
-            priority = board.hamming() + moves;
+            priority = board.manhattan() + moves;
         }
-
 
         public int compareTo(SearchNode that) {
             if (this.priority > that.priority) {
